@@ -1,0 +1,290 @@
+:root {
+    --bg: #f4f6fb;
+    --card: #ffffff;
+    --ink: #1f2430;
+    --muted: #7b8496;
+    --primary: #2f9e5e;
+    --primary-dark: #237a48;
+    --border: #e6e8ef;
+    --accent: #e6f7ec;
+    --danger: #dc2626;
+    --success: #16a34a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #aee7ff 0%, #cdefff 35%, #eafbf0 70%, #d6f5df 100%);
+    background-size: 100% 200%;
+    animation: skyShift 24s ease infinite;
+}
+
+@keyframes skyShift {
+    0%   { background-position: 50% 0%; }
+    50%  { background-position: 50% 100%; }
+    100% { background-position: 50% 0%; }
+}
+
+/* ---- Live nature scene (behind all content) ---- */
+.scene {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Sun with a soft glow that gently pulses */
+.sun {
+    position: absolute;
+    top: 8%;
+    right: 12%;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #fff6c8, #ffe073 55%, #ffcf4d 100%);
+    box-shadow: 0 0 60px 24px rgba(255, 216, 102, 0.65);
+    animation: sunPulse 6s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 60px 24px rgba(255, 216, 102, 0.55); }
+    50%      { transform: scale(1.06); box-shadow: 0 0 80px 32px rgba(255, 216, 102, 0.8); }
+}
+
+/* Clouds — fluffy shapes that drift across the sky */
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 100px;
+    opacity: 0.9;
+    filter: blur(0.4px);
+}
+.cloud::before,
+.cloud::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+.cloud-1 { top: 16%; width: 140px; height: 42px; animation: drift1 42s linear infinite; }
+.cloud-1::before { width: 60px; height: 60px; top: -26px; left: 24px; }
+.cloud-1::after  { width: 46px; height: 46px; top: -18px; left: 74px; }
+
+.cloud-2 { top: 30%; width: 100px; height: 32px; opacity: 0.8; animation: drift2 60s linear infinite; }
+.cloud-2::before { width: 44px; height: 44px; top: -20px; left: 18px; }
+.cloud-2::after  { width: 34px; height: 34px; top: -12px; left: 54px; }
+
+.cloud-3 { top: 10%; width: 80px; height: 26px; opacity: 0.7; animation: drift1 78s linear infinite; }
+.cloud-3::before { width: 36px; height: 36px; top: -16px; left: 14px; }
+.cloud-3::after  { width: 28px; height: 28px; top: -10px; left: 44px; }
+
+@keyframes drift1 {
+    from { transform: translateX(-220px); }
+    to   { transform: translateX(calc(100vw + 220px)); }
+}
+@keyframes drift2 {
+    from { transform: translateX(calc(100vw + 180px)); }
+    to   { transform: translateX(-180px); }
+}
+
+/* Rolling hills layered at the bottom */
+.hill {
+    position: absolute;
+    left: -5%;
+    width: 110%;
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.hill-back  { bottom: 0; height: 34vh; background: #86d19b; }
+.hill-mid   { bottom: 0; height: 26vh; background: #5cb877; left: -15%; width: 130%; }
+.hill-front { bottom: 0; height: 18vh; background: #3f9d5e; left: 10%; width: 120%; }
+
+/* Respect users who prefer no motion */
+@media (prefers-reduced-motion: reduce) {
+    body, .sun, .cloud { animation: none; }
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+}
+
+.page-header { margin-bottom: 24px; }
+
+.page-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.subtitle {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.flash {
+    background: #ecfdf5;
+    color: var(--success);
+    border: 1px solid #bbf7d0;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 30px rgba(16, 24, 40, 0.08);
+}
+
+.card h2 {
+    margin: 0 0 18px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.add-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.field { display: flex; flex-direction: column; }
+
+.field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.field input {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.field input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(47, 158, 94, .2);
+}
+
+.field-submit {
+    grid-column: 1 / -1;
+    align-items: flex-start;
+    margin-top: 4px;
+}
+
+button {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+button:hover { background: var(--primary-dark); }
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.table-header h2 { margin: 0; }
+
+.badge {
+    background: var(--accent);
+    color: var(--primary-dark);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 999px;
+}
+
+.table-wrap { overflow-x: auto; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted);
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+}
+
+tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #fafbff; }
+
+.muted { color: var(--muted); }
+.strong { font-weight: 600; }
+
+.tag {
+    background: var(--accent);
+    color: var(--primary-dark);
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.stock {
+    display: inline-block;
+    min-width: 28px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--success);
+}
+
+.stock.low { color: var(--danger); }
+
+.empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+}
+
+.empty p {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+@media (max-width: 640px) {
+    .add-form { grid-template-columns: 1fr; }
+}

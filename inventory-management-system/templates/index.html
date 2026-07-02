@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Management System</title>
+<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+<div class="scene" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="hill hill-back"></div>
+    <div class="hill hill-mid"></div>
+    <div class="hill hill-front"></div>
+</div>
+<div class="container">
+    <header class="page-header">
+        <h1>📦 Inventory Management</h1>
+        <p class="subtitle">Track your products, stock levels, and suppliers</p>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">✓ {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section class="card">
+        <h2>Add a Product</h2>
+        <form action="/add" method="post" class="add-form">
+            <div class="field">
+                <label>Product Name</label>
+                <input name="name" placeholder="e.g. Wireless Mouse" required>
+            </div>
+            <div class="field">
+                <label>Category</label>
+                <input name="category" placeholder="e.g. Electronics" required>
+            </div>
+            <div class="field">
+                <label>Quantity</label>
+                <input name="quantity" type="number" min="0" placeholder="0" required>
+            </div>
+            <div class="field">
+                <label>Price</label>
+                <input name="price" type="number" step="0.01" min="0" placeholder="0.00" required>
+            </div>
+            <div class="field">
+                <label>Supplier</label>
+                <input name="supplier" placeholder="e.g. Acme Co." required>
+            </div>
+            <div class="field field-submit">
+                <button type="submit">+ Add Product</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="card">
+        <div class="table-header">
+            <h2>Products</h2>
+            <span class="badge">{{ products|length }} item{{ '' if products|length == 1 else 's' }}</span>
+        </div>
+
+        {% if products %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in products %}
+                    <tr>
+                        <td class="muted">#{{ p[0] }}</td>
+                        <td class="strong">{{ p[1] }}</td>
+                        <td><span class="tag">{{ p[2] }}</span></td>
+                        <td>
+                            {% if p[3]|int <= 5 %}
+                                <span class="stock low">{{ p[3] }}</span>
+                            {% else %}
+                                <span class="stock">{{ p[3] }}</span>
+                            {% endif %}
+                        </td>
+                        <td>${{ '%.2f'|format(p[4]|float) }}</td>
+                        <td class="muted">{{ p[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty">
+            <p>No products yet.</p>
+            <span>Add your first product using the form above.</span>
+        </div>
+        {% endif %}
+    </section>
+</div>
+</body>
+</html>
