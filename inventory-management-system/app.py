@@ -31,6 +31,11 @@ def init_db():
     conn.close()
 
 
+# Ensure the database table exists as soon as the app is imported,
+# so it works both locally (python app.py) and on a hosting server (WSGI).
+init_db()
+
+
 @app.route('/')
 def index():
     conn = get_db()
@@ -60,5 +65,4 @@ def add():
 
 
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
